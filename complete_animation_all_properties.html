@@ -337,12 +337,20 @@
                 </div>
 
                 <!-- Min/Max Controls -->
-                <div class="controls-grid">
+                <div class="controls-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                     <div class="control-group">
                         <label for="minValue" id="minLabel">Minimum Value</label>
                         <div class="slider-container">
                             <input type="range" id="minValue" min="0" max="100" step="1" value="50">
                             <span class="value-display" id="minDisplay">0.5x</span>
+                        </div>
+                    </div>
+<!-- additional middle value  -->
+                    <div class="control-group" id="midGroup" style="display: none;">
+                        <label for="midValue" id="midLabel">Middle Value</label>
+                        <div class="slider-container">
+                            <input type="range" id="midValue" min="0" max="100" step="1" value="100">
+                            <span class="value-display" id="midDisplay">1.0x</span>
                         </div>
                     </div>
 
@@ -545,6 +553,12 @@
         const minLabel = document.getElementById('minLabel');
         const maxLabel = document.getElementById('maxLabel');
         
+        const midValue = document.getElementById('midValue');
+        const midDisplay = document.getElementById('midDisplay');
+        const midLabel = document.getElementById('midLabel');
+        const midGroup = document.getElementById('midGroup');
+        const controlsGrid = document.querySelector('.controls-grid');
+        
         const infoType = document.getElementById('infoType');
         const infoRange = document.getElementById('infoRange');
         const infoDuration = document.getElementById('infoDuration');
@@ -562,11 +576,13 @@
             zoom: {
                 name: 'ZOOM', fullName: 'Zoom (Scale)',
                 minRange: { min: 0, max: 200, step: 5, default: 50 },
-                maxRange: { min: 50, max: 500, step: 10, default: 150 },
-                minLabel: 'Minimum Scale', maxLabel: 'Maximum Scale', emoji: '⭐',
+                midRange: { min: 0, max: 300, step: 5, default: 120, display: true },
+                maxRange: { min: 50, max: 500, step: 10, default: 100 },
+                minLabel: 'Start Scale', midLabel: 'Middle Scale', maxLabel: 'End Scale', emoji: '⭐',
                 getMinDisplay: (v) => (v / 100).toFixed(2) + 'x',
+                getMidDisplay: (v) => (v / 100).toFixed(2) + 'x',
                 getMaxDisplay: (v) => (v / 100).toFixed(2) + 'x',
-                getKeyframes: (min, max) => `  0%   { transform: scale(${min / 100}); }\n  100% { transform: scale(${max / 100}); }`
+                getKeyframes: (min, mid, max) => `  0%   { transform: scale(${min / 100}); }\n  50%  { transform: scale(${mid / 100}); }\n  100% { transform: scale(${max / 100}); }`
             },
             fade: {
                 name: 'FADE', fullName: 'Fade (Opacity)',
@@ -574,7 +590,7 @@
                 maxRange: { min: 0, max: 100, step: 5, default: 100 },
                 minLabel: 'Minimum Opacity', maxLabel: 'Maximum Opacity', emoji: '👻',
                 getMinDisplay: (v) => v + '%', getMaxDisplay: (v) => v + '%',
-                getKeyframes: (min, max) => `  0%   { opacity: ${min / 100}; }\n  50%  { opacity: ${max / 100}; }\n  100% { opacity: ${min / 100}; }`
+                getKeyframes: (min, mid, max) => `  0%   { opacity: ${min / 100}; }\n  50%  { opacity: ${max / 100}; }\n  100% { opacity: ${min / 100}; }`
             },
             slideLeftRight: {
                 name: 'SLIDE L↔R', fullName: 'Slide Left ↔ Right',
@@ -582,7 +598,7 @@
                 maxRange: { min: 0, max: 500, step: 10, default: 100 },
                 minLabel: 'Left Position', maxLabel: 'Right Position', emoji: '⬅️➡️',
                 getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateX(${min}px); }\n  50%  { transform: translateX(${max}px); }\n  100% { transform: translateX(${min}px); }`
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); }\n  50%  { transform: translateX(${max}px); }\n  100% { transform: translateX(${min}px); }`
             },
             slideInLeft: {
                 name: 'SLIDE IN←', fullName: 'Slide In From Left',
@@ -702,16 +718,35 @@
 
         function updateSliderConfig() {
             const cfg = config();
+            
+            // Min
             minValue.min = cfg.minRange.min;
             minValue.max = cfg.minRange.max;
             minValue.step = cfg.minRange.step;
             minValue.value = cfg.minRange.default;
+            minLabel.textContent = cfg.minLabel;
+
+            // Mid (Optional)
+            if (cfg.midRange && cfg.midRange.display) {
+                midGroup.style.display = 'block';
+                controlsGrid.style.gridTemplateColumns = '1fr 1fr 1fr';
+                midValue.min = cfg.midRange.min;
+                midValue.max = cfg.midRange.max;
+                midValue.step = cfg.midRange.step;
+                midValue.value = cfg.midRange.default;
+                midLabel.textContent = cfg.midLabel || 'Middle Value';
+            } else {
+                midGroup.style.display = 'none';
+                controlsGrid.style.gridTemplateColumns = '1fr 1fr';
+            }
+
+            // Max
             maxValue.min = cfg.maxRange.min;
             maxValue.max = cfg.maxRange.max;
             maxValue.step = cfg.maxRange.step;
             maxValue.value = cfg.maxRange.default;
-            minLabel.textContent = cfg.minLabel;
             maxLabel.textContent = cfg.maxLabel;
+            
             typeBadge.textContent = cfg.name;
             animatedElement.textContent = cfg.emoji;
             updateDisplays();
@@ -720,6 +755,11 @@
         function updateDisplays() {
             const cfg = config();
             minDisplay.textContent = cfg.getMinDisplay(parseFloat(minValue.value));
+            
+            if (cfg.midRange && cfg.midRange.display) {
+                midDisplay.textContent = cfg.getMidDisplay(parseFloat(midValue.value));
+            }
+
             maxDisplay.textContent = cfg.getMaxDisplay(parseFloat(maxValue.value));
             durationDisplay.textContent = parseFloat(duration.value).toFixed(1) + 's';
             delayDisplay.textContent = parseFloat(delay.value).toFixed(1) + 's';
@@ -729,7 +769,13 @@
         function updateInfo() {
             const cfg = config();
             infoType.textContent = cfg.fullName;
-            infoRange.textContent = `${cfg.getMinDisplay(parseFloat(minValue.value))} → ${cfg.getMaxDisplay(parseFloat(maxValue.value))}`;
+            
+            let rangeText = `${cfg.getMinDisplay(parseFloat(minValue.value))} → ${cfg.getMaxDisplay(parseFloat(maxValue.value))}`;
+            if (cfg.midRange && cfg.midRange.display) {
+                rangeText = `${cfg.getMinDisplay(parseFloat(minValue.value))} → ${cfg.getMidDisplay(parseFloat(midValue.value))} → ${cfg.getMaxDisplay(parseFloat(maxValue.value))}`;
+            }
+            infoRange.textContent = rangeText;
+
             infoDuration.textContent = parseFloat(duration.value).toFixed(1) + 's';
             infoDelay.textContent = parseFloat(delay.value).toFixed(1) + 's';
             infoIterations.textContent = iterationCount.value === 'infinite' ? 'Infinite' : iterationCount.value + ' times';
@@ -742,6 +788,7 @@
         function updateCodePreview() {
             const cfg = config();
             const min = parseFloat(minValue.value);
+            const mid = parseFloat(midValue.value);
             const max = parseFloat(maxValue.value);
             const dur = parseFloat(duration.value).toFixed(1);
             const del = parseFloat(delay.value).toFixed(1);
@@ -752,7 +799,7 @@
             const playState = isPlaying ? 'running' : 'paused';
             
             codePreview.innerHTML = `<span class="keyword">@keyframes</span> customAnimation {
-${cfg.getKeyframes(min, max)}
+${cfg.getKeyframes(min, mid, max)}
 }
 
 <span class="keyword">.element</span> {
@@ -773,6 +820,7 @@ ${cfg.getKeyframes(min, max)}
         function applyAnimation() {
             const cfg = config();
             const min = parseFloat(minValue.value);
+            const mid = parseFloat(midValue.value);
             const max = parseFloat(maxValue.value);
             const dur = parseFloat(duration.value);
             const del = parseFloat(delay.value);
@@ -786,7 +834,7 @@ ${cfg.getKeyframes(min, max)}
 
             const style = document.createElement('style');
             style.id = 'dynamicStyle';
-            style.textContent = `@keyframes customAnimation {\n${cfg.getKeyframes(min, max)}\n}`;
+            style.textContent = `@keyframes customAnimation {\n${cfg.getKeyframes(min, mid, max)}\n}`;
             document.head.appendChild(style);
 
             animatedElement.style.animation = 'none';
@@ -820,6 +868,7 @@ ${cfg.getKeyframes(min, max)}
         }
 
         minValue.addEventListener('input', updateUI);
+        midValue.addEventListener('input', updateUI);
         maxValue.addEventListener('input', updateUI);
         duration.addEventListener('input', updateUI);
         delay.addEventListener('input', updateUI);
