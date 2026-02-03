@@ -345,6 +345,7 @@
                             <span class="value-display" id="minDisplay">0.5x</span>
                         </div>
                     </div>
+
 <!-- additional middle value  -->
                     <div class="control-group" id="midGroup" style="display: none;">
                         <label for="midValue" id="midLabel">Middle Value</label>
@@ -587,8 +588,15 @@
             fade: {
                 name: 'FADE', fullName: 'Fade (Opacity)',
                 minRange: { min: 0, max: 100, step: 5, default: 0 },
+
+                midRange: { min: 0, max: 300, step: 5, default: 120, display: true },
+
                 maxRange: { min: 0, max: 100, step: 5, default: 100 },
                 minLabel: 'Minimum Opacity', maxLabel: 'Maximum Opacity', emoji: '👻',
+
+                getMidDisplay: (v) => (v / 100).toFixed(2) + 'x',
+                getMaxDisplay: (v) => (v / 100).toFixed(2) + 'x',
+                
                 getMinDisplay: (v) => v + '%', getMaxDisplay: (v) => v + '%',
                 getKeyframes: (min, mid, max) => `  0%   { opacity: ${min / 100}; }\n  50%  { opacity: ${max / 100}; }\n  100% { opacity: ${min / 100}; }`
             },
@@ -634,11 +642,14 @@
             },
             slideUpDown: {
                 name: 'SLIDE U↔D', fullName: 'Slide Up ↔ Down',
-                minRange: { min: -500, max: 0, step: 10, default: -100 },
-                maxRange: { min: 0, max: 500, step: 10, default: 100 },
-                minLabel: 'Up Position', maxLabel: 'Down Position', emoji: '⬆️⬇️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateY(${min}px); }\n  50%  { transform: translateY(${max}px); }\n  100% { transform: translateY(${min}px); }`
+                minRange: { min: -600, max: 600, step: 10, default: -200 },
+                midRange: { min: -600, max: 600, step: 10, default: 50, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 0 },
+                minLabel: 'Start Y', midLabel: 'Middle Y (Bounce)', maxLabel: 'End Y', emoji: '⬆️⬇️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateY(${min}px); }\n  50%  { transform: translateY(${mid}px); }\n  100% { transform: translateY(${max}px); }`
             },
             slideInTop: {
                 name: 'SLIDE IN↓', fullName: 'Slide In From Top',
