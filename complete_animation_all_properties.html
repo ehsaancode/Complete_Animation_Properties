@@ -602,54 +602,58 @@
             },
             slideLeftRight: {
                 name: 'SLIDE L↔R', fullName: 'Slide Left ↔ Right',
-                // minRange: { min: -500, max: 0, step: 10, default: -100 },
-                    // midRange: { min: 0, max: 300, step: 5, default: 200, display: true },
-
-                // maxRange: { min: 0, max: 500, step: 10, default: 100 },
-                // minLabel: 'Up Position', maxLabel: 'Down Position', emoji: '⬆️⬇️',
-                //   getMidDisplay: (v) => (v / 200).toFixed(2) + 'x',
-                // getMaxDisplay: (v) => (v / 100).toFixed(2) + 'x',
-                
-                // getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                // getKeyframes: (min, max) => `  0%   { transform: translateY(${min}px); }\n  50%  { transform: translateY(${max}px); }\n  100% { transform: translateY(${min}px); }`
-                
-                minRange: { min: -500, max: 0, step: 10, default: -100 },
-                maxRange: { min: 0, max: 500, step: 10, default: 100 },
-                minLabel: 'Left Position', maxLabel: 'Right Position', emoji: '⬅️➡️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); }\n  50%  { transform: translateX(${max}px); }\n  100% { transform: translateX(${min}px); }`
+                minRange: { min: -600, max: 600, step: 10, default: -200 },
+                midRange: { min: -600, max: 600, step: 10, default: 0, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 200 },
+                minLabel: 'Start X', midLabel: 'Middle X', maxLabel: 'End X', emoji: '⬅️➡️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); }\n  50%  { transform: translateX(${mid}px); }\n  100% { transform: translateX(${max}px); }`
             },
             slideInLeft: {
                 name: 'SLIDE IN←', fullName: 'Slide In From Left',
-                minRange: { min: -500, max: -50, step: 10, default: -200 },
-                maxRange: { min: -10, max: 10, step: 1, default: 0 },
-                minLabel: 'Start (Off-screen)', maxLabel: 'End (Center)', emoji: '➡️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateX(${min}px); opacity: 0; }\n  100% { transform: translateX(${max}px); opacity: 1; }`
+                minRange: { min: -600, max: 600, step: 10, default: -200 },
+                midRange: { min: -600, max: 600, step: 10, default: -100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 0 },
+                minLabel: 'Start X (Off)', midLabel: 'Middle X', maxLabel: 'End X (Center)', emoji: '➡️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); opacity: 0; }\n  50%  { transform: translateX(${mid}px); opacity: 0.5; }\n  100% { transform: translateX(${max}px); opacity: 1; }`
             },
             slideInRight: {
                 name: 'SLIDE IN→', fullName: 'Slide In From Right',
-                minRange: { min: 50, max: 500, step: 10, default: 200 },
-                maxRange: { min: -10, max: 10, step: 1, default: 0 },
-                minLabel: 'Start (Off-screen)', maxLabel: 'End (Center)', emoji: '⬅️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateX(${min}px); opacity: 0; }\n  100% { transform: translateX(${max}px); opacity: 1; }`
+                minRange: { min: -600, max: 600, step: 10, default: 200 },
+                midRange: { min: -600, max: 600, step: 10, default: 100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 0 },
+                minLabel: 'Start X (Off)', midLabel: 'Middle X', maxLabel: 'End X (Center)', emoji: '⬅️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); opacity: 0; }\n  50%  { transform: translateX(${mid}px); opacity: 0.5; }\n  100% { transform: translateX(${max}px); opacity: 1; }`
             },
             slideOutLeft: {
                 name: 'SLIDE OUT←', fullName: 'Slide Out To Left',
-                minRange: { min: -10, max: 10, step: 1, default: 0 },
-                maxRange: { min: -500, max: -50, step: 10, default: -200 },
-                minLabel: 'Start (Center)', maxLabel: 'End (Off-screen)', emoji: '⬅️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateX(${min}px); opacity: 1; }\n  100% { transform: translateX(${max}px); opacity: 0; }`
+                minRange: { min: -600, max: 600, step: 10, default: 0 },
+                midRange: { min: -600, max: 600, step: 10, default: -100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: -200 },
+                minLabel: 'Start X (Center)', midLabel: 'Middle X', maxLabel: 'End X (Off)', emoji: '⬅️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); opacity: 1; }\n  50%  { transform: translateX(${mid}px); opacity: 0.5; }\n  100% { transform: translateX(${max}px); opacity: 0; }`
             },
             slideOutRight: {
                 name: 'SLIDE OUT→', fullName: 'Slide Out To Right',
-                minRange: { min: -10, max: 10, step: 1, default: 0 },
-                maxRange: { min: 50, max: 500, step: 10, default: 200 },
-                minLabel: 'Start (Center)', maxLabel: 'End (Off-screen)', emoji: '➡️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateX(${min}px); opacity: 1; }\n  100% { transform: translateX(${max}px); opacity: 0; }`
+                minRange: { min: -600, max: 600, step: 10, default: 0 },
+                midRange: { min: -600, max: 600, step: 10, default: 100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 200 },
+                minLabel: 'Start X (Center)', midLabel: 'Middle X', maxLabel: 'End X (Off)', emoji: '➡️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateX(${min}px); opacity: 1; }\n  50%  { transform: translateX(${mid}px); opacity: 0.5; }\n  100% { transform: translateX(${max}px); opacity: 0; }`
             },
             slideUpDown: {
                 name: 'SLIDE U↔D', fullName: 'Slide Up ↔ Down',
@@ -664,35 +668,47 @@
             },
             slideInTop: {
                 name: 'SLIDE IN↓', fullName: 'Slide In From Top',
-                minRange: { min: -500, max: -50, step: 10, default: -200 },
-                maxRange: { min: -10, max: 10, step: 1, default: 0 },
-                minLabel: 'Start (Off-screen)', maxLabel: 'End (Center)', emoji: '⬇️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateY(${min}px); opacity: 0; }\n  100% { transform: translateY(${max}px); opacity: 1; }`
+                minRange: { min: -600, max: 600, step: 10, default: -200 },
+                midRange: { min: -600, max: 600, step: 10, default: -100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 0 },
+                minLabel: 'Start Y (Off)', midLabel: 'Middle Y', maxLabel: 'End Y (Center)', emoji: '⬇️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateY(${min}px); opacity: 0; }\n  50%  { transform: translateY(${mid}px); opacity: 0.5; }\n  100% { transform: translateY(${max}px); opacity: 1; }`
             },
             slideInBottom: {
                 name: 'SLIDE IN↑', fullName: 'Slide In From Bottom',
-                minRange: { min: 50, max: 500, step: 10, default: 200 },
-                maxRange: { min: -10, max: 10, step: 1, default: 0 },
-                minLabel: 'Start (Off-screen)', maxLabel: 'End (Center)', emoji: '⬆️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateY(${min}px); opacity: 0; }\n  100% { transform: translateY(${max}px); opacity: 1; }`
+                minRange: { min: -600, max: 600, step: 10, default: 200 },
+                midRange: { min: -600, max: 600, step: 10, default: 100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 0 },
+                minLabel: 'Start Y (Off)', midLabel: 'Middle Y', maxLabel: 'End Y (Center)', emoji: '⬆️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateY(${min}px); opacity: 0; }\n  50%  { transform: translateY(${mid}px); opacity: 0.5; }\n  100% { transform: translateY(${max}px); opacity: 1; }`
             },
             slideOutTop: {
                 name: 'SLIDE OUT↑', fullName: 'Slide Out To Top',
-                minRange: { min: -10, max: 10, step: 1, default: 0 },
-                maxRange: { min: -500, max: -50, step: 10, default: -200 },
-                minLabel: 'Start (Center)', maxLabel: 'End (Off-screen)', emoji: '⬆️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateY(${min}px); opacity: 1; }\n  100% { transform: translateY(${max}px); opacity: 0; }`
+                minRange: { min: -600, max: 600, step: 10, default: 0 },
+                midRange: { min: -600, max: 600, step: 10, default: -100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: -200 },
+                minLabel: 'Start Y (Center)', midLabel: 'Middle Y', maxLabel: 'End Y (Off)', emoji: '⬆️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateY(${min}px); opacity: 1; }\n  50%  { transform: translateY(${mid}px); opacity: 0.5; }\n  100% { transform: translateY(${max}px); opacity: 0; }`
             },
             slideOutBottom: {
                 name: 'SLIDE OUT↓', fullName: 'Slide Out To Bottom',
-                minRange: { min: -10, max: 10, step: 1, default: 0 },
-                maxRange: { min: 50, max: 500, step: 10, default: 200 },
-                minLabel: 'Start (Center)', maxLabel: 'End (Off-screen)', emoji: '⬇️',
-                getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
-                getKeyframes: (min, max) => `  0%   { transform: translateY(${min}px); opacity: 1; }\n  100% { transform: translateY(${max}px); opacity: 0; }`
+                minRange: { min: -600, max: 600, step: 10, default: 0 },
+                midRange: { min: -600, max: 600, step: 10, default: 100, display: true },
+                maxRange: { min: -600, max: 600, step: 10, default: 200 },
+                minLabel: 'Start Y (Center)', midLabel: 'Middle Y', maxLabel: 'End Y (Off)', emoji: '⬇️',
+                getMinDisplay: (v) => v + 'px',
+                getMidDisplay: (v) => v + 'px',
+                getMaxDisplay: (v) => v + 'px',
+                getKeyframes: (min, mid, max) => `  0%   { transform: translateY(${min}px); opacity: 1; }\n  50%  { transform: translateY(${mid}px); opacity: 0.5; }\n  100% { transform: translateY(${max}px); opacity: 0; }`
             },
             blur: {
                 name: 'BLUR', fullName: 'Blur',
