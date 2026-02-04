@@ -331,11 +331,14 @@
                         <option value="blur">💫 Blur</option>
                         <option value="rotate">🔄 Rotate</option>
                         <option value="shake">🔔 Shake</option>
-                        <option value="flip">🔃 Flip</option>
+                        <option value="flipRight">➡️ Flip Right</option>
+                        <option value="flipLeft">⬅️ Flip Left</option>
+                        <option value="flipTop">⬆️ Flip Top</option>
+                        <option value="flipBottom">⬇️ Flip Bottom</option>
                         <option value="saturate">🎨 Saturate (Color)</option>
                     </select>
                 </div>
-
+                
                 <!-- Min/Max Controls -->
                 <div class="controls-grid" style="grid-template-columns: 1fr 1fr 1fr;">
                     <div class="control-group">
@@ -432,10 +435,8 @@
                     <div class="control-group">
                         <label for="fillMode">Fill Mode (animation-fill-mode)</label>
                         <select id="fillMode">
-                            <option value="none">None (Reset)</option>
                             <option value="forwards" selected>Forwards (Keep end)</option>
                             <option value="backwards">Backwards (Apply start)</option>
-                            <option value="both">Both</option>
                         </select>
                     </div>
                 </div>
@@ -452,6 +453,7 @@
                 </div>
             </div>
         </div>
+
 
         <!-- Animation Info -->
         <div class="info-section">
@@ -588,17 +590,11 @@
             fade: {
                 name: 'FADE', fullName: 'Fade (Opacity)',
                 minRange: { min: 0, max: 100, step: 5, default: 0 },
-
-                midRange: { min: 0, max: 300, step: 5, default: 120, display: true },
-
                 maxRange: { min: 0, max: 100, step: 5, default: 100 },
                 minLabel: 'Minimum Opacity', maxLabel: 'Maximum Opacity', emoji: '👻',
-
-                getMidDisplay: (v) => (v / 100).toFixed(2) + 'x',
-                getMaxDisplay: (v) => (v / 100).toFixed(2) + 'x',
-                
-                getMinDisplay: (v) => v + '%', getMaxDisplay: (v) => v + '%',
-                getKeyframes: (min, mid, max) => `  0%   { opacity: ${min / 100}; }\n  50%  { opacity: ${max / 100}; }\n  100% { opacity: ${min / 100}; }`
+                getMinDisplay: (v) => v + '%',
+                getMaxDisplay: (v) => v + '%',
+                getKeyframes: (min, max) => `  0%   { opacity: ${min / 100}; }\n  100% { opacity: ${max / 100}; }`
             },
             slideLeftRight: {
                 name: 'SLIDE L↔R', fullName: 'Slide Left ↔ Right',
@@ -720,11 +716,12 @@
             },
             rotate: {
                 name: 'ROTATE', fullName: 'Rotate',
-                minRange: { min: 0, max: 720, step: 15, default: 0 },
-                maxRange: { min: 0, max: 1440, step: 30, default: 360 },
-                minLabel: 'Start Angle', maxLabel: 'End Angle', emoji: '🔄',
-                getMinDisplay: (v) => v + '°', getMaxDisplay: (v) => v + '°',
-                getKeyframes: (min, max) => `  0%   { transform: rotate(${min}deg); }\n  50%  { transform: rotate(${max}deg); }\n  100% { transform: rotate(${min}deg); }`
+                minRange: { min: 0, max: 720, step: 30, default: 0 },
+                midRange: { min: 0, max: 720, step: 30, default: 180, display: true },
+                maxRange: { min: 0, max: 720, step: 30, default: 360 },
+                minLabel: 'Start Angle', midLabel: 'Middle Angle', maxLabel: 'End Angle', emoji: '🔄',
+                getMinDisplay: (v) => v + '°', getMidDisplay: (v) => v + '°', getMaxDisplay: (v) => v + '°',
+                getKeyframes: (min, mid, max) => `  0%   { transform: rotate(${min}deg); }\n  50%  { transform: rotate(${mid}deg); }\n  100% { transform: rotate(${max}deg); }`
             },
             shake: {
                 name: 'SHAKE', fullName: 'Shake',
@@ -734,13 +731,49 @@
                 getMinDisplay: (v) => v + 'px', getMaxDisplay: (v) => v + 'px',
                 getKeyframes: (min, max) => `  0%, 100% { transform: translateX(0); }\n  10%, 30%, 50%, 70%, 90% { transform: translateX(${min}px); }\n  20%, 40%, 60%, 80% { transform: translateX(${max}px); }`
             },
-            flip: {
-                name: 'FLIP', fullName: 'Flip',
+            flipRight: {
+                name: 'FLIP ➡️', fullName: 'Flip Right (Rotate Y)',
                 minRange: { min: 0, max: 360, step: 15, default: 0 },
-                maxRange: { min: 180, max: 720, step: 30, default: 360 },
-                minLabel: 'Start Flip', maxLabel: 'End Flip', emoji: '🔃',
-                getMinDisplay: (v) => v + '°', getMaxDisplay: (v) => v + '°',
-                getKeyframes: (min, max) => `  0%   { transform: rotateY(${min}deg); }\n  50%  { transform: rotateY(${max}deg); }\n  100% { transform: rotateY(${min}deg); }`
+                midRange: { min: 0, max: 360, step: 15, default: 90, display: true },
+                maxRange: { min: 0, max: 360, step: 15, default: 180 },
+                minLabel: 'Start Angle', midLabel: 'Middle Angle', maxLabel: 'End Angle', emoji: '➡️',
+                getMinDisplay: (v) => v + '°',
+                getMidDisplay: (v) => v + '°',
+                getMaxDisplay: (v) => v + '°',
+                getKeyframes: (min, mid, max) => `  0%   { transform: rotateY(${min}deg); }\n  50%  { transform: rotateY(${mid}deg); }\n  100% { transform: rotateY(${max}deg); }`
+            },
+            flipLeft: {
+                name: 'FLIP ⬅️', fullName: 'Flip Left (Rotate Y)',
+                minRange: { min: -360, max: 0, step: 15, default: 0 },
+                midRange: { min: -360, max: 0, step: 15, default: -90, display: true },
+                maxRange: { min: -360, max: 0, step: 15, default: -180 },
+                minLabel: 'Start Angle', midLabel: 'Middle Angle', maxLabel: 'End Angle', emoji: '⬅️',
+                getMinDisplay: (v) => v + '°',
+                getMidDisplay: (v) => v + '°',
+                getMaxDisplay: (v) => v + '°',
+                getKeyframes: (min, mid, max) => `  0%   { transform: rotateY(${min}deg); }\n  50%  { transform: rotateY(${mid}deg); }\n  100% { transform: rotateY(${max}deg); }`
+            },
+            flipTop: {
+                name: 'FLIP ⬆️', fullName: 'Flip Top (Rotate X)',
+                minRange: { min: 0, max: 360, step: 15, default: 0 },
+                midRange: { min: 0, max: 360, step: 15, default: 90, display: true },
+                maxRange: { min: 0, max: 360, step: 15, default: 180 },
+                minLabel: 'Start Angle', midLabel: 'Middle Angle', maxLabel: 'End Angle', emoji: '⬆️',
+                getMinDisplay: (v) => v + '°',
+                getMidDisplay: (v) => v + '°',
+                getMaxDisplay: (v) => v + '°',
+                getKeyframes: (min, mid, max) => `  0%   { transform: rotateX(${min}deg); }\n  50%  { transform: rotateX(${mid}deg); }\n  100% { transform: rotateX(${max}deg); }`
+            },
+            flipBottom: {
+                name: 'FLIP ⬇️', fullName: 'Flip Bottom (Rotate X)',
+                minRange: { min: -360, max: 0, step: 15, default: 0 },
+                midRange: { min: -360, max: 0, step: 15, default: -90, display: true },
+                maxRange: { min: -360, max: 0, step: 15, default: -180 },
+                minLabel: 'Start Angle', midLabel: 'Middle Angle', maxLabel: 'End Angle', emoji: '⬇️',
+                getMinDisplay: (v) => v + '°',
+                getMidDisplay: (v) => v + '°',
+                getMaxDisplay: (v) => v + '°',
+                getKeyframes: (min, mid, max) => `  0%   { transform: rotateX(${min}deg); }\n  50%  { transform: rotateX(${mid}deg); }\n  100% { transform: rotateX(${max}deg); }`
             },
             saturate: {
                 name: 'SATURATE', fullName: 'Saturate (Color)',
